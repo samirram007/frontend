@@ -15,8 +15,8 @@ const axiosClient: AxiosInstance = axios.create({
 axiosClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         // Example: Custom headers or logging
-        config.headers['X-Requested-With'] = 'XMLHttpRequest';
-        console.info(`[Request] ${config.method?.toUpperCase()} ${config.url}`);
+        // config.headers['X-Requested-With'] = 'XMLHttpRequest';
+        // console.info(`[Request] ${config.method?.toUpperCase()} ${config.url}`);
         return config;
     },
     (error: AxiosError) => {
