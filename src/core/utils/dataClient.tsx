@@ -17,14 +17,14 @@ export const getData = async (apiPath: string) => {
         })
 }
 export const postData = async (apiPath: string, payload: object) => {
-    console.log(apiPath, removeEmptyStrings(payload))
+    // console.log(apiPath, removeEmptyStrings(payload))
     return await axiosClient.post(apiPath, removeEmptyStrings(payload))
         .then(response => {
             successHandler(response)
             return response.data;
         })
         .catch((err) => {
-            //console.log("Error",err)
+            console.log("Error", err)
             errorHandler(err)
             throw err
 

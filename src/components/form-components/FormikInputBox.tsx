@@ -25,12 +25,26 @@ import {
 
 import useDebouncedFormik from "@/core/hooks/useDebouncedFormik";
 import './style.css';
-export const FormikInputBox = (
+
+type FormikInputBoxProps = {
+    formik: any;
+    label: string;
+    name: string;
+    placeholder?: string;
+    type?: string;
+    extClass?: string;
+    semi?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+}
+    & React.ComponentProps<"div">;
+export const FormikInputBox: React.FC<FormikInputBoxProps> = (
     { formik, label, name, placeholder, type, extClass, ...props }
 ) => {
+
     const debouncedFormik = useDebouncedFormik(formik, 1000);
     return (
-        <div className={`${props.semi ? 'semi-group' : 'form-group'}`}>
+        <div className={`${props.semi ? 'semi-group' : 'form-group'} grid gap-3`}>
             <Label htmlFor={name} className={extClass}>{label}</Label>
             {type === 'date' ?
                 <Input
@@ -63,7 +77,7 @@ export const FormikInputBox = (
     )
 }
 
-const DateInputBox = ({ formik, label, name, placeholder, type, extClass, ...props }) => {
+const DateInputBox: React.FC<FormikInputBoxProps> = ({ formik, label, name, placeholder, type, extClass, ...props }: FormikInputBoxProps) => {
     const now = today(getLocalTimeZone());
 
     return (

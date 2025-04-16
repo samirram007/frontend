@@ -1,7 +1,8 @@
 import { FormikInputBox } from "@/components/form-components/FormikInputBox";
 import { FormikSubmit } from "@/components/form-components/FormikSubmit";
-import { useFormik } from "formik";
+import { FormikValues, useFormik } from "formik";
 import * as Yup from "yup";
+import { LoginProps } from "../contexts/AuthContextProvider";
 import { useAuth } from "../contexts/features/useAuth";
 import { useLogin } from "../hooks/useLogin";
 const validationSchema = Yup.object().shape({
@@ -9,19 +10,13 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().required("email is required"),
 });
 // initailValues must be Empty before Production
-type FormValues = {
-  email: string,
-  password: string,
-};
+
 const initialValues = {
   email: "admin@admin.com",
   password: "password",
 };
-type FormikFormProps = {
-  formik: FormValues;
-  mutation?: () => void; // Adjust based on actual mutation function type
-}
-const FormikForm = ({ formik, mutation }: FormikFormProps) => {
+
+const FormikForm = ({ formik }: FormikValues) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="px-10">
@@ -33,6 +28,7 @@ const FormikForm = ({ formik, mutation }: FormikFormProps) => {
             extClass={"align-self-right"}
             name="email"
             label="User Id or Email"
+            placeholder="Enter your email"
           />
         </div>
 
@@ -44,14 +40,14 @@ const FormikForm = ({ formik, mutation }: FormikFormProps) => {
             extClass={"align-self-right"}
             name="password"
             label="Password"
+            placeholder={"Enter your password"}
           />
         </div>
         <div className="flex items-center justify-center">
           <FormikSubmit
             formik={formik}
             btnColor=""
-            label="Login"
-            disabled={mutation.isPending}
+            label="Login" 
             className="self-center w-full py-3 font-bold text-white transition-all rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 active:ring-4 active:ring-blue-300/20 focus:bg-blue-600 active:text-white "
           />
         </div>
@@ -60,15 +56,18 @@ const FormikForm = ({ formik, mutation }: FormikFormProps) => {
   );
 };
 const Login: React.FC = () => {
-  const loginMutation = useLogin();
+  //const loginMutation = useLogin();
   const { login } = useAuth()
     ;
-  const formik = useFormik({
+  const formik = useFormik<{
+    email: string;
+    password: string;
+  }>({
     initialValues,
     validationSchema,
-    onSubmit: async (values: FormValues) => {
-      await login(values.email, values.password);
-      // await loginMutation.mutate(values);
+    onSubmit: async (values: LoginProps) => {
+      await login(values as LoginProps);
+    // await loginMutation.mutate(values);
       console.log("Submitting login");
     },
   });
@@ -91,7 +90,7 @@ const Login: React.FC = () => {
         <p className="mb-6 text-center text-gray-300">
           Please login to your account
         </p>
-        <FormikForm formik={formik} mutation={loginMutation} />
+        <FormikForm formik={formik} />
 
         <div className="hidden mt-4 text-center">
           <a
@@ -107,7 +106,7 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-export const PostMutation = async (values: FormValues) => {
+export const PostMutation = async (values: LoginProps) => {
   //const navigate = useNavigate()
   console.log("cal00l");
   const loginMutation = useLogin();

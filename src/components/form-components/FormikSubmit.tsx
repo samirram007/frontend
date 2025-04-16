@@ -1,8 +1,19 @@
-import { Loader } from "lucide-react"
-import { Button } from "../ui/button"
+import { FormikState, FormikValues } from "formik";
+import { Loader } from "lucide-react";
+import React from "react";
+import { Button } from "../ui/button";
 
-export const FormikSubmit = (
-    { formik, label, btnColor = `bg-primary`, ...props }
+
+type FormikSubmitProps<T extends FormikValues = FormikValues> = {
+    formik: FormikState<T>;
+    label: string;
+    btnColor?: string;
+    disabled?: boolean;
+    className?: string;
+    [key: string]: any;
+}
+export const FormikSubmit: React.FC<FormikSubmitProps> = (
+    { formik, label, btnColor = `bg-primary`, ...props }: FormikSubmitProps
 ) => {
 
     return (

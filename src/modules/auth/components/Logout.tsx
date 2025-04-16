@@ -5,7 +5,7 @@ import { useLogout } from "../hooks/useLogout";
 const Logout = () => {
   const logoutMutation = useLogout()
 
-  const handleLogout = (ev) => {
+  const handleLogout = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
 
     logoutMutation.mutate()
